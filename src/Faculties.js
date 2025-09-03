@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 function Faculties() {
 
@@ -6,16 +6,19 @@ function Faculties() {
     {id:1, subjectName:"FWT",subjectCode:2501203,subjectFaculty:"AVB"},
     {id:2, subjectName:"DS",subjectCode:2501204,subjectFaculty:"PUJ"},
   ]);
+
+  const [isUpdate, setIsUpdate] = useState(true);
+
   const apiUrl = "https://62d6c51451e6e8f06f12bd5d.mockapi.io/faculties";
 
-  fetch(apiUrl)
-  .then(res=>res.json())
-  .then(res=>{
-    console.log("Data recived");
-    setData(res);
-  });
+  
+  useEffect(()=>{
+    fetch(apiUrl)
+    .then(res=>res.json())
+    .then(res=>setData(res));
+  },[isUpdate]);
 
-  console.log("Something");
+  
   
   const foramtedData = data.map((fac)=>{
     return(
@@ -53,6 +56,13 @@ function Faculties() {
               <a href="#!" data-filter=".rac">Penthouse</a>
             </li>
           </ul>
+          <div className='row'>
+            <div className='col'>
+              <button onClick={()=>{
+                setIsUpdate(!isUpdate);
+              }} className='btn btn-info'>Refresh</button>
+            </div>
+          </div>
           <div class="row properties-box">
             { foramtedData }
           </div>
